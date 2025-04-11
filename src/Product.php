@@ -1,7 +1,7 @@
 <?php
 require_once 'ProductController.php';
 
-$methoh = $_SERVER[['REQUEST_METHOD']];
+$method = $_SERVER[['REQUEST_METHOD']];
 $controller = new ProductController();
 
 switch ($method) {
