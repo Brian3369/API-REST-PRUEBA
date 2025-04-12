@@ -42,6 +42,20 @@ class Product{
         }
     }
 
+    public function getProductByID(){
+        $query = "select * from " . $this->table_name . " where id = :id";
+        $stmt = $this->conn->prepare($query);
+
+        $this->id = htmlspecialchars(strip_tags($this->id));
+        $stmt->bindParam(':id', $this->id);
+
+        if($stmt->execute()){
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }else{
+            return false;
+        }
+    }
+
     public function updateProduct(){
         $query = "update " . $this->table_name . " set nombre = :nombre, descripcion = :descripcion, precio = :precio where id=:id";
         $stmt = $this->conn->prepare($query);
@@ -61,11 +75,20 @@ class Product{
         }else{
             return false;
         }
-
     }
 
     public function deleteProduct(){
+        $query = "delete from " . $this->table_name . " where id = :id";
+        $stmt = $this->conn->prepare($query);
 
+        $this->id = htmlspecialchars(strip_tags($this->id));
+        $stmt->bindParam(':id', $this->id);
+
+        if($stmt->execute()){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
 ?>

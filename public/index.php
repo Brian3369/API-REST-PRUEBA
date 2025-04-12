@@ -9,7 +9,12 @@ $controller = new ProductController();
 
 switch ($method) {
     case 'GET':
-        $controller->getAllProducts();
+        $id = isset($_GET['id']) ? $_GET['id'] : null;
+        if (!$id) {
+            $controller->getProductByID();
+        } else {
+            $controller->getAllProducts();
+        }
         break;
     case 'POST':
         $controller->createProduct();

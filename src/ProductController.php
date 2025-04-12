@@ -48,6 +48,26 @@ class ProductController{
         }
     }
 
+    public function getProductByID(){
+        $data = json_decode(file_get_contents("php://input"));
+
+        if(isset($data->id)){
+            $this->product->id = $data->id;
+            $data = $this->product->getProductByID();
+
+            if($data){
+                http_response_code(200);
+                echo json_encode($data);
+            }else{
+                http_response_code(404);
+                echo json_encode(["message" => "Producto no encontrado."]);
+            }
+        }else{
+            http_response_code(400);
+            echo json_encode(["message" => "Datos incompletos."]);
+        }
+    }
+
     public function updateProduct(){
         $data = json_decode(file_get_contents("php://input"));
         if(isset($data->id) && isset($data->nombre) && isset($data->descripcion) && isset($data->precio)){
@@ -71,7 +91,22 @@ class ProductController{
     }
 
     public function deleteProduct(){
+        $data = json_decode(file_get_contents("php://input"));
 
+        if(isset($data->id)){
+            $this->product->id = $data->id;
+
+            if($this->product->deleteProduct()){
+                http_response_code(200);
+                echo json_encode(["message" => "Producto eliminado."]);
+            }else{
+                http_response_code(503);
+                echo json_encode(["message" => "Error al eliminar el producto."]);
+            }
+        }else{
+            http_response_code(400);
+            echo json_encode(["message" => "Datos incompletos."]);
+        }
     }
 }
 ?>
